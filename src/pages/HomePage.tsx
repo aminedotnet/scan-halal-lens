@@ -1,9 +1,19 @@
 import { Camera, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { initializeAdMob, showBannerAd } from '@/services/admob';
 
 const HomePage = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // تهيئة AdMob عند تحميل التطبيق
+    initializeAdMob();
+    
+    // عرض إعلان البانر
+    showBannerAd();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-secondary flex flex-col">

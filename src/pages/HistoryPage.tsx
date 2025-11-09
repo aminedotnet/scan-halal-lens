@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { getHistory, deleteFromHistory, clearHistory } from '@/utils/storage';
 import { ScanHistory } from '@/types/product';
 import { toast } from 'sonner';
+import { showBannerAd } from '@/services/admob';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +25,8 @@ const HistoryPage = () => {
 
   useEffect(() => {
     loadHistory();
+    // عرض إعلان البانر
+    showBannerAd();
   }, []);
 
   const loadHistory = () => {

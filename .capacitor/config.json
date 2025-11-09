@@ -1,0 +1,6 @@
+{
+  "appId": "app.lovable.halal",
+  "appName": "حلال",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

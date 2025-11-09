@@ -1,69 +1,65 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera, ArrowLeft, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { analyzeProduct } from '@/services/ai';
 import { saveToHistory } from '@/utils/storage';
 import { toast } from 'sonner';
+import { captureFromCamera, pickFromGallery, requestCameraPermissions } from '@/services/camera';
+import { showBannerAd, showInterstitialAdIfReady } from '@/services/admob';
+import { Capacitor } from '@capacitor/core';
 
 const ScannerPage = () => {
   const navigate = useNavigate();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isCameraActive, setIsCameraActive] = useState(false);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } 
+  const [hasPermissions, setHasPermissions] = useState(false);
+  
+  useEffect(() => {
+    // طلب أذونات الكاميرا عند تحميل الصفحة
+    if (Capacitor.isNativePlatform()) {
+      requestCameraPermissions().then(granted => {
+        setHasPermissions(granted);
+        if (!granted) {
+          toast.error('يرجى منح إذن الوصول للكاميرا');
+        }
       });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setIsCameraActive(true);
+    } else {
+      setHasPermissions(true);
+    }
+    
+    // عرض إعلان البانر
+    showBannerAd();
+  }, []);
+
+  const handleCameraCapture = async () => {
+    if (!hasPermissions) {
+      const granted = await requestCameraPermissions();
+      if (!granted) {
+        toast.error('يرجى منح إذن الوصول للكاميرا');
+        return;
       }
+      setHasPermissions(true);
+    }
+
+    try {
+      const imageData = await captureFromCamera();
+      setCapturedImage(imageData);
+      handleAnalyze(imageData);
     } catch (error) {
-      console.error('Error accessing camera:', error);
-      toast.error('لا يمكن الوصول إلى الكاميرا');
+      console.error('Error capturing from camera:', error);
+      toast.error('فشل التقاط الصورة');
     }
   };
 
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-      setIsCameraActive(false);
-    }
-  };
-
-  const captureFromCamera = () => {
-    if (videoRef.current) {
-      const canvas = document.createElement('canvas');
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(videoRef.current, 0, 0);
-        const imageData = canvas.toDataURL('image/jpeg');
-        setCapturedImage(imageData);
-        stopCamera();
-        handleAnalyze(imageData);
-      }
-    }
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageData = reader.result as string;
-        setCapturedImage(imageData);
-        handleAnalyze(imageData);
-      };
-      reader.readAsDataURL(file);
+  const handleGalleryPick = async () => {
+    try {
+      const imageData = await pickFromGallery();
+      setCapturedImage(imageData);
+      handleAnalyze(imageData);
+    } catch (error) {
+      console.error('Error picking from gallery:', error);
+      toast.error('فشل اختيار الصورة');
     }
   };
 
@@ -80,6 +76,9 @@ const ScannerPage = () => {
         result
       };
       saveToHistory(scanRecord);
+      
+      // عرض إعلان بيني إذا حان الوقت (بعد كل 3 فحوصات)
+      await showInterstitialAdIfReady();
       
       // الانتقال لصفحة النتائج
       navigate('/result', { state: { result, image: imageData } });
@@ -130,10 +129,7 @@ const ScannerPage = () => {
               className="w-full rounded-2xl shadow-medium mb-4"
             />
             <Button
-              onClick={() => {
-                setCapturedImage(null);
-                setIsCameraActive(false);
-              }}
+              onClick={() => setCapturedImage(null)}
               variant="outline"
               className="w-full"
             >
@@ -143,72 +139,36 @@ const ScannerPage = () => {
         ) : (
           // Camera/Upload Options
           <div className="w-full max-w-md space-y-4">
-            {isCameraActive ? (
-              <div className="relative rounded-2xl overflow-hidden bg-black">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  className="w-full"
-                />
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3">
-                  <Button
-                    onClick={captureFromCamera}
-                    size="lg"
-                    className="rounded-full w-16 h-16"
-                  >
-                    <Camera className="h-6 w-6" />
-                  </Button>
-                  <Button
-                    onClick={stopCamera}
-                    size="lg"
-                    variant="destructive"
-                    className="rounded-full"
-                  >
-                    إلغاء
-                  </Button>
-                </div>
+            <Button
+              onClick={handleCameraCapture}
+              size="lg"
+              disabled={!hasPermissions}
+              className="w-full py-8 text-lg rounded-2xl"
+            >
+              <Camera className="ml-2 h-6 w-6" />
+              <span>التقاط صورة</span>
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
               </div>
-            ) : (
-              <>
-                <Button
-                  onClick={startCamera}
-                  size="lg"
-                  className="w-full py-8 text-lg rounded-2xl"
-                >
-                  <Camera className="ml-2 h-6 w-6" />
-                  <span>فتح الكاميرا</span>
-                </Button>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  أو
+                </span>
+              </div>
+            </div>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-border" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      أو
-                    </span>
-                  </div>
-                </div>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  variant="outline"
-                  size="lg"
-                  className="w-full py-8 text-lg rounded-2xl"
-                >
-                  <Upload className="ml-2 h-6 w-6" />
-                  <span>اختيار صورة من المعرض</span>
-                </Button>
-              </>
-            )}
+            <Button
+              onClick={handleGalleryPick}
+              variant="outline"
+              size="lg"
+              className="w-full py-8 text-lg rounded-2xl"
+            >
+              <Upload className="ml-2 h-6 w-6" />
+              <span>اختيار صورة من المعرض</span>
+            </Button>
 
             <div className="mt-8 p-4 bg-muted/50 rounded-xl">
               <h3 className="font-semibold text-foreground mb-2">نصائح للحصول على أفضل نتيجة:</h3>

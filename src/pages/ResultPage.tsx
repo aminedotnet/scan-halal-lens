@@ -4,11 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AnalysisResult, ProductStatus } from '@/types/product';
+import { useEffect } from 'react';
+import { showBannerAd } from '@/services/admob';
 
 const ResultPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { result, image } = location.state as { result: AnalysisResult; image: string };
+
+  useEffect(() => {
+    // عرض إعلان البانر
+    showBannerAd();
+  }, []);
 
   if (!result) {
     navigate('/');
