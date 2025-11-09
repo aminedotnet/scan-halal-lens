@@ -1,0 +1,202 @@
+{
+  "ingredients": [
+    {
+      "name": "جيلاتين",
+      "nameEn": "gelatin",
+      "status": "suspicious",
+      "reason": "قد يكون من مصدر حيواني غير حلال (خنزير) أو حلال (بقر). يجب التأكد من المصدر."
+    },
+    {
+      "name": "جيلاتين بقري",
+      "nameEn": "beef gelatin",
+      "status": "halal",
+      "reason": "جيلاتين من مصدر بقري حلال"
+    },
+    {
+      "name": "جيلاتين الخنزير",
+      "nameEn": "pork gelatin",
+      "status": "haram",
+      "reason": "جيلاتين من لحم الخنزير - غير حلال"
+    },
+    {
+      "name": "كحول",
+      "nameEn": "alcohol",
+      "status": "suspicious",
+      "reason": "قد يكون كحول صناعي (حلال) أو كحول إيثيلي مخمر. يفضل التأكد."
+    },
+    {
+      "name": "إيثانول",
+      "nameEn": "ethanol",
+      "status": "suspicious",
+      "reason": "كحول إيثيلي، قد يكون مخمراً. يفضل التجنب إلا للضرورة."
+    },
+    {
+      "name": "شحم الخنزير",
+      "nameEn": "lard",
+      "status": "haram",
+      "reason": "دهن الخنزير - غير حلال بالمطلق"
+    },
+    {
+      "name": "بيكون",
+      "nameEn": "bacon",
+      "status": "haram",
+      "reason": "لحم خنزير - غير حلال"
+    },
+    {
+      "name": "نكهة الخنزير",
+      "nameEn": "pork flavor",
+      "status": "haram",
+      "reason": "نكهة مستخرجة من لحم الخنزير"
+    },
+    {
+      "name": "منفحة",
+      "nameEn": "rennet",
+      "status": "suspicious",
+      "reason": "قد تكون من مصدر حيواني غير مذكى أو نباتي. يجب التحقق."
+    },
+    {
+      "name": "إي 120",
+      "nameEn": "e120",
+      "status": "suspicious",
+      "reason": "صبغة قرمزية من حشرة القرمز. محل خلاف بين العلماء."
+    },
+    {
+      "name": "إي 441",
+      "nameEn": "e441",
+      "status": "suspicious",
+      "reason": "جيلاتين قد يكون من مصدر غير حلال"
+    },
+    {
+      "name": "إي 542",
+      "nameEn": "e542",
+      "status": "suspicious",
+      "reason": "فوسفات العظام، قد تكون من مصدر غير حلال"
+    },
+    {
+      "name": "دم",
+      "nameEn": "blood",
+      "status": "haram",
+      "reason": "الدم محرم في الإسلام"
+    },
+    {
+      "name": "لحم غير مذكى",
+      "nameEn": "non-halal meat",
+      "status": "haram",
+      "reason": "لحم لم يذبح وفق الشريعة الإسلامية"
+    },
+    {
+      "name": "خميرة",
+      "nameEn": "yeast",
+      "status": "halal",
+      "reason": "خميرة طبيعية حلال"
+    },
+    {
+      "name": "ملح",
+      "nameEn": "salt",
+      "status": "halal",
+      "reason": "ملح طبيعي حلال"
+    },
+    {
+      "name": "سكر",
+      "nameEn": "sugar",
+      "status": "halal",
+      "reason": "سكر نباتي حلال"
+    },
+    {
+      "name": "دقيق",
+      "nameEn": "flour",
+      "status": "halal",
+      "reason": "دقيق نباتي حلال"
+    },
+    {
+      "name": "زيت نباتي",
+      "nameEn": "vegetable oil",
+      "status": "halal",
+      "reason": "زيت نباتي حلال"
+    },
+    {
+      "name": "زيت الزيتون",
+      "nameEn": "olive oil",
+      "status": "halal",
+      "reason": "زيت زيتون طبيعي حلال"
+    },
+    {
+      "name": "ماء",
+      "nameEn": "water",
+      "status": "halal",
+      "reason": "ماء طبيعي حلال"
+    },
+    {
+      "name": "حليب",
+      "nameEn": "milk",
+      "status": "halal",
+      "reason": "حليب طبيعي حلال"
+    },
+    {
+      "name": "بيض",
+      "nameEn": "eggs",
+      "status": "halal",
+      "reason": "بيض طبيعي حلال"
+    },
+    {
+      "name": "عسل",
+      "nameEn": "honey",
+      "status": "halal",
+      "reason": "عسل طبيعي حلال"
+    },
+    {
+      "name": "فانيليا",
+      "nameEn": "vanilla",
+      "status": "suspicious",
+      "reason": "قد تحتوي على كحول في المستخلص. يفضل فانيليا طبيعية بدون كحول."
+    },
+    {
+      "name": "مستحلب",
+      "nameEn": "emulsifier",
+      "status": "suspicious",
+      "reason": "قد يكون من مصدر حيواني أو نباتي. يجب التحقق من المصدر."
+    },
+    {
+      "name": "إي 471",
+      "nameEn": "e471",
+      "status": "suspicious",
+      "reason": "مستحلب قد يكون من مصدر حيواني غير حلال أو نباتي"
+    },
+    {
+      "name": "إي 476",
+      "nameEn": "e476",
+      "status": "halal",
+      "reason": "مستحلب نباتي (من فول الصويا) - حلال"
+    },
+    {
+      "name": "ليسيثين الصويا",
+      "nameEn": "soy lecithin",
+      "status": "halal",
+      "reason": "مستحلب نباتي من فول الصويا - حلال"
+    },
+    {
+      "name": "كارمين",
+      "nameEn": "carmine",
+      "status": "suspicious",
+      "reason": "صبغة حمراء من حشرات. محل خلاف بين العلماء."
+    },
+    {
+      "name": "نشا",
+      "nameEn": "starch",
+      "status": "halal",
+      "reason": "نشا نباتي حلال"
+    },
+    {
+      "name": "نكهة طبيعية",
+      "nameEn": "natural flavor",
+      "status": "suspicious",
+      "reason": "قد تكون من مصدر حيواني أو نباتي. يفضل التحقق."
+    },
+    {
+      "name": "صبغة طبيعية",
+      "nameEn": "natural color",
+      "status": "suspicious",
+      "reason": "قد تكون من مصدر حيواني (مثل قرمز) أو نباتي"
+    }
+  ]
+}
